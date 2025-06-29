@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import CartSlide from "./CartSlide";
+// import CartSlide from "./CartSlide";
 import { useCart } from "../contexts/CartContext.jsx";
-import { useState } from "react";
+// import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const { state } = useCart();
   const count = state.items.reduce((s,i)=>s+i.qty, 0);
   
@@ -36,7 +36,7 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center space-x-4">
-            <button 
+            {/* <button 
               onClick={()=>setOpen(!open)} 
               className="relative group bg-white/5 backdrop-blur-sm hover:bg-white/10 p-4 rounded-2xl transition-all duration-300 hover:scale-110 border border-white/10 hover:border-white/20"
               title="Quick Cart View"
@@ -50,7 +50,7 @@ export default function Navbar() {
               )}
               
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/50 to-pink-500/50 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-            </button>
+            </button> */}
 
             <Link
               to="/cart"
@@ -110,7 +110,7 @@ export default function Navbar() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
       </header>
       
-      {open && <CartSlide />}
+      {/* {open && <CartSlide />} */}
     </>
   );
 }

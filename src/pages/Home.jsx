@@ -22,6 +22,7 @@ export default function Home() {
     "vegetables": "🥦",
     "meat": "🍖",
     "oil": "🛢️",
+    "accessories": "🧢",
   };
 
   return (

@@ -176,6 +176,10 @@ export default function Category() {
                                                                                                                         sub.toLowerCase().includes('chicken') ? '🍗' :
                                                                                                                           sub.toLowerCase().includes('fish') ? '🐟' :
                                                                                                                             sub.toLowerCase().includes('egg') ? '🥚' :
+                                                                                                                              sub.toLowerCase().includes('bread') ? '🍞' :
+                                                                                                                                sub.toLowerCase().includes('jam') ? '🍯' :
+                                                                                                                                sub.toLowerCase().includes('ketchup') ? '🍅' :
+                                                                                                                                sub.toLowerCase().includes('cornflakes') ? '🌽' :
                                                                                     '🛍️'}
                     </div>
 

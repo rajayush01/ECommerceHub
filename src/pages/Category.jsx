@@ -155,6 +155,27 @@ export default function Category() {
                                                                               sub.toLowerCase().includes('eyewear') ? '👓' :
                                                                                 sub.toLowerCase().includes('jewelry') ? '💎' :
                                                                                   sub.toLowerCase().includes('misc') ? '👜' :
+                                                                                    sub.toLowerCase().includes('milk') ? '🥛' :
+                                                                                      sub.toLowerCase().includes('cheese') ? '🧀' :
+                                                                                        sub.toLowerCase().includes('yogurt') ? '🥣' :
+                                                                                          sub.toLowerCase().includes('butter') ? '🧈' :
+                                                                                            sub.toLowerCase().includes('apple') ? '🍎' :
+                                                                                              sub.toLowerCase().includes('banana') ? '🍌' :
+                                                                                                sub.toLowerCase().includes('orange') ? '🍊' :
+                                                                                                  sub.toLowerCase().includes('grapes') ? '🍇' :
+                                                                                                    sub.toLowerCase().includes('potato') ? '🥔' :
+                                                                                                      sub.toLowerCase().includes('broccoli') ? '🥦' :
+                                                                                                        sub.toLowerCase().includes('spinach') ? '🥬' :
+                                                                                                          sub.toLowerCase().includes('avocado') ? '🥑' :
+                                                                                                            sub.toLowerCase().includes('eggplant') ? '🍆' :
+                                                                                                              sub.toLowerCase().includes('tomato') ? '🍅' :
+                                                                                                                sub.toLowerCase().includes('rice bran') ? '🍚':
+                                                                                                                  sub.toLowerCase().includes('olive') ? '🫒' :
+                                                                                                                    sub.toLowerCase().includes('groundnut') ? '🥜' :
+                                                                                                                      sub.toLowerCase().includes('sesame') ? '🌾' :
+                                                                                                                        sub.toLowerCase().includes('chicken') ? '🍗' :
+                                                                                                                          sub.toLowerCase().includes('fish') ? '🐟' :
+                                                                                                                            sub.toLowerCase().includes('egg') ? '🥚' :
                                                                                     '🛍️'}
                     </div>
 

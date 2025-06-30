@@ -16,7 +16,12 @@ export default function Home() {
     "footwear": "👟",
     "eyewear": "🕶️",
     "jewelry": "💍",
-    "miscellaneous": "🛍️"
+    "miscellaneous": "🛍️",
+    "dairy": "🥛",
+    "fruits": "🍎",
+    "vegetables": "🥦",
+    "meat": "🍖",
+    "oil": "🛢️",
   };
 
   return (

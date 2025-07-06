@@ -8,6 +8,8 @@ import ProductDetails from "./pages/ProductDetails";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
+import { Circle } from "lucide-react";
+import SocialShopping from "./pages/SocialShopping";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/circle" element={<Circle />} />
+          <Route path="/social-shopping" element={<SocialShopping />} />
         </Routes>
       </div>
       <Footer />

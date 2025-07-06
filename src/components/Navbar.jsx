@@ -30,22 +30,40 @@ export default function Navbar() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl sm:rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             </div>
             <span className="bg-gradient-to-r text-sm sm:text-lg md:text-2xl from-white to-purple-200 bg-clip-text text-transparent hidden xs:block">
-              CommerceHub
+              CommerceHub 
             </span>
             <span className="bg-gradient-to-r text-sm md:text-2xl from-white to-purple-200 bg-clip-text text-transparent block xs:hidden">
               CommerceHub
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
+          <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
+            {/* Social Shopping Circles Button */}
+            <Link
+              to="/social-shopping"
+              className="relative group bg-gradient-to-r from-emerald-500/20 to-teal-500/20 backdrop-blur-sm hover:from-emerald-500/30 hover:to-teal-500/30 px-3 lg:px-4 py-3 rounded-2xl transition-all duration-300 hover:scale-110 border border-emerald-300/20 hover:border-emerald-300/40"
+              title="Shop Together"
+            >
+              <div className="flex items-center space-x-2">
+                <div className="relative">
+                  <span className="text-lg transform group-hover:scale-110 transition-transform duration-300">👥</span>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                </div>
+                <span className="text-white font-semibold text-sm lg:text-base hidden lg:block">Shop Together</span>
+                <span className="text-white font-semibold text-sm block lg:hidden">Social</span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/50 to-teal-500/50 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+            </Link>
+
             <Link
               to="/cart"
-              className="relative group bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-sm hover:from-indigo-500/30 hover:to-purple-500/30 px-4 py-3 rounded-2xl transition-all duration-300 hover:scale-110 border border-indigo-300/20 hover:border-indigo-300/40"
+              className="relative group bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-sm hover:from-indigo-500/30 hover:to-purple-500/30 px-3 lg:px-4 py-3 rounded-2xl transition-all duration-300 hover:scale-110 border border-indigo-300/20 hover:border-indigo-300/40"
               title="Go to Cart Page"
             >
               <div className="flex items-center space-x-2">
-                <span className="text-xl transform group-hover:scale-110 transition-transform duration-300">🛍️</span>
-                <span className="text-white font-semibold text-sm">View Cart</span>
+                <span className="text-lg transform group-hover:scale-110 transition-transform duration-300">🛍️</span>
+                <span className="text-white font-semibold text-sm lg:text-base hidden lg:block">View Cart</span>
+                <span className="text-white font-semibold text-sm block lg:hidden">Cart</span>
               </div>
               
               {count > 0 && (
@@ -59,10 +77,10 @@ export default function Navbar() {
             
             {user ? (
               <div className="flex items-center space-x-3">
-                <div className="bg-white/10 backdrop-blur-sm px-3 lg:px-6 py-3 rounded-2xl border border-white/20 transform hover:scale-105 transition-all duration-300">
+                <div className="bg-white/10 backdrop-blur-sm px-3 lg:px-4 py-3 rounded-2xl border border-white/20 transform hover:scale-105 transition-all duration-300">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-white text-sm lg:text-lg font-semibold">
+                    <span className="text-white text-sm lg:text-base font-semibold">
                       Hi, <span className="text-purple-300">{user.email.split('@')[0]}</span>
                     </span>
                   </div>
@@ -70,7 +88,7 @@ export default function Navbar() {
                 
                 <button 
                   onClick={logout} 
-                  className="group relative bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 lg:px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/50 overflow-hidden text-sm lg:text-base"
+                  className="group relative bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 lg:px-5 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/50 overflow-hidden text-sm lg:text-base"
                 >
                   <span className="relative z-10">Logout</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
@@ -79,11 +97,11 @@ export default function Navbar() {
             ) : (
               <Link 
                 to="/login" 
-                className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 lg:px-8 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/50 overflow-hidden text-sm lg:text-base"
+                className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 lg:px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/50 overflow-hidden text-sm lg:text-base"
               >
                 <span className="relative z-10 flex items-center space-x-2">
                   <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1" />
                   </svg>
                   <span>Login</span>
                 </span>
@@ -93,6 +111,18 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-2 md:hidden">
+            <Link
+              to="/social-shopping"
+              className="relative group bg-gradient-to-r from-emerald-500/20 to-teal-500/20 backdrop-blur-sm hover:from-emerald-500/30 hover:to-teal-500/30 p-2 rounded-xl transition-all duration-300 hover:scale-110 border border-emerald-300/20 hover:border-emerald-300/40"
+              title="Shop Together"
+            >
+              <div className="relative">
+                <span className="text-lg transform group-hover:scale-110 transition-transform duration-300">👥</span>
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/50 to-teal-500/50 rounded-xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+            </Link>
+
             <Link
               to="/cart"
               className="relative group bg-gradient-to-r from-indigo-500/20 to-purple-500/20 backdrop-blur-sm hover:from-indigo-500/30 hover:to-purple-500/30 p-2 rounded-xl transition-all duration-300 hover:scale-110 border border-indigo-300/20 hover:border-indigo-300/40"
@@ -157,7 +187,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center justify-center space-x-2">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013 3v1" />
                   </svg>
                   <span>Login</span>
                 </span>

@@ -16,6 +16,7 @@ export default function SocialShopping() {
   const [selectedMain, setSelectedMain] = useState('');
   const [selectedSub, setSelectedSub] = useState('');
   const [selectedProductIndex, setSelectedProductIndex] = useState('');
+  const [pendingJoinRequest, setPendingJoinRequest] = useState(null);
 
 
   // Mock data for demo
@@ -334,36 +335,36 @@ export default function SocialShopping() {
   };
 
   const createCircle = () => {
-  if (newCircleName.trim()) {
-    const newCircle = {
-      id: Date.now(),
-      name: newCircleName,
-      members: [
-        {
-          id: 1,
-          name: "You",
-          email: "you@example.com",
-          role: "owner",
-          avatar: "👤",
-          online: true,
-          status: "joined"
-        }
-      ],
-      budget: 400,
-      spent: 0,
-      created: "Just now",
-      lastActivity: "Just now"
-    };
+    if (newCircleName.trim()) {
+      const newCircle = {
+        id: Date.now(),
+        name: newCircleName,
+        members: [
+          {
+            id: 1,
+            name: "You",
+            email: "you@example.com",
+            role: "owner",
+            avatar: "👤",
+            online: true,
+            status: "joined"
+          }
+        ],
+        budget: 400,
+        spent: 0,
+        created: "Just now",
+        lastActivity: "Just now"
+      };
 
-    setCircles([...circles, newCircle]);
-    setSelectedCircle(newCircle);     // set active
-    setSharedCart([]);                // EMPTY cart for new circle
-    setActivityFeed([]);              // optional: reset feed
-    setRealtimeUpdates([]);           // optional: reset updates
-    setNewCircleName('');
-    setShowCreateModal(false);
-  }
-};
+      setCircles([...circles, newCircle]);
+      setSelectedCircle(newCircle);     // set active
+      setSharedCart([]);                // EMPTY cart for new circle
+      setActivityFeed([]);              // optional: reset feed
+      setRealtimeUpdates([]);           // optional: reset updates
+      setNewCircleName('');
+      setShowCreateModal(false);
+    }
+  };
 
 
   const addItem = () => {
@@ -413,66 +414,72 @@ export default function SocialShopping() {
   };
 
   const inviteMember = () => {
-  if (inviteEmail.trim() && selectedCircle) {
-    const name = inviteEmail.split('@')[0];
-    const newMember = {
-      id: Date.now(),
-      name: name.charAt(0).toUpperCase() + name.slice(1),
-      email: inviteEmail,
-      role: "invited",
-      avatar: "✉️",
-      online: false,
-      status: "pending"
-    };
+    if (inviteEmail.trim() && selectedCircle) {
+      const name = inviteEmail.split('@')[0];
+      const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
 
+      const newMember = {
+        id: Date.now(),
+        name: formattedName,
+        email: inviteEmail,
+        role: "invited",
+        avatar: "✉️",
+        online: false,
+        status: "pending"
+      };
+
+      const updatedCircles = circles.map(circle => {
+        if (circle.id === selectedCircle.id) {
+          const updatedCircle = {
+            ...circle,
+            members: [...circle.members, newMember]
+          };
+          setSelectedCircle(updatedCircle);
+          return updatedCircle;
+        }
+        return circle;
+      });
+
+      setCircles(updatedCircles);
+      addToActivityFeed("You", `invited ${newMember.name} to join`, "invite");
+      addRealtimeUpdate(`You invited ${newMember.name} to the circle`);
+      setInviteEmail('');
+
+      // Show alert and after confirmation, show join request popup
+      alert("Invite sent");
+      setPendingJoinRequest(newMember); // trigger modal
+    }
+  };
+
+
+  const acceptInvite = (memberId) => {
     const updatedCircles = circles.map(circle => {
-      if (circle.id === selectedCircle.id) {
-        const updatedCircle = {
-          ...circle,
-          members: [...circle.members, newMember]
-        };
-        setSelectedCircle(updatedCircle); // Update selectedCircle too
-        return updatedCircle;
-      }
-      return circle;
+      if (circle.id !== selectedCircle.id) return circle;
+
+      const updatedMembers = circle.members.map(member => {
+        if (member.id === memberId) {
+          return {
+            ...member,
+            status: "joined",
+            role: "member",
+            avatar: "👤",
+            online: true
+          };
+        }
+        return member;
+      });
+
+      const updatedCircle = { ...circle, members: updatedMembers };
+      setSelectedCircle(updatedCircle); // update view immediately
+      return updatedCircle;
     });
 
     setCircles(updatedCircles);
-    addToActivityFeed("You", `invited ${newMember.name} to join`, "invite");
-    addRealtimeUpdate(`You invited ${newMember.name} to the circle`);
-    setInviteEmail('');
-  }
-};
 
-
-const acceptInvite = (memberId) => {
-  const updatedCircles = circles.map(circle => {
-    if (circle.id !== selectedCircle.id) return circle;
-
-    const updatedMembers = circle.members.map(member => {
-      if (member.id === memberId) {
-        return {
-          ...member,
-          status: "joined",
-          role: "member",
-          avatar: "👤",
-          online: true
-        };
-      }
-      return member;
-    });
-
-    const updatedCircle = { ...circle, members: updatedMembers };
-    setSelectedCircle(updatedCircle); // update view immediately
-    return updatedCircle;
-  });
-
-  setCircles(updatedCircles);
-
-  const accepted = selectedCircle.members.find(m => m.id === memberId);
-  addToActivityFeed("You", `accepted ${accepted?.name}'s join request`, "join");
-  addRealtimeUpdate(`${accepted?.name} has joined the circle`);
-};
+    const accepted = selectedCircle.members.find(m => m.id === memberId);
+    addToActivityFeed("You", `accepted ${accepted?.name}'s join request`, "join");
+    addRealtimeUpdate(`${accepted?.name} has joined the circle`);
+  };
 
 
 
@@ -738,43 +745,43 @@ const acceptInvite = (memberId) => {
                       <h4 className="text-lg font-bold text-white">Members</h4>
                     </div>
 
-                   <div className="space-y-3">
-  {selectedCircle.members.map(member => (
-    <div key={member.id} className="flex items-center justify-between">
-      <div className="flex items-center space-x-3">
-        <div className="relative">
-          <span className="text-lg">{member.avatar}</span>
-          {member.online && (
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-black"></div>
-          )}
-        </div>
-        <div>
-          <span className="text-white font-medium">{member.name}</span>
-          <div className="flex items-center space-x-1">
-            {getRoleIcon(member.role)}
-            <span className="text-xs text-gray-400 capitalize">
-              {member.status === "pending" ? "Invited" : member.role}
-            </span>
-          </div>
-        </div>
-      </div>
+                    <div className="space-y-3">
+                      {selectedCircle.members.map(member => (
+                        <div key={member.id} className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className="relative">
+                              <span className="text-lg">{member.avatar}</span>
+                              {member.online && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-black"></div>
+                              )}
+                            </div>
+                            <div>
+                              <span className="text-white font-medium">{member.name}</span>
+                              <div className="flex items-center space-x-1">
+                                {getRoleIcon(member.role)}
+                                <span className="text-xs text-gray-400 capitalize">
+                                  {member.status === "pending" ? "Invited" : member.role}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
 
-      {/* Accept button for pending users */}
-      {member.status === "pending" ? (
-        <button
-          onClick={() => acceptInvite(member.id)}
-          className="text-xs bg-emerald-500 text-white px-2 py-1 rounded hover:bg-emerald-600"
-        >
-          Accept
-        </button>
-      ) : (
-        <div className="text-xs text-gray-400">
-          {member.online ? 'Online' : 'Offline'}
-        </div>
-      )}
-    </div>
-  ))}
-</div>
+                          {/* Accept button for pending users */}
+                          {member.status === "pending" ? (
+                            <button
+                              onClick={() => acceptInvite(member.id)}
+                              className="text-xs bg-emerald-500 text-white px-2 py-1 rounded hover:bg-emerald-600"
+                            >
+                              Accept
+                            </button>
+                          ) : (
+                            <div className="text-xs text-gray-400">
+                              {member.online ? 'Online' : 'Offline'}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
 
 
                     <div className="mt-4 pt-4 border-t border-white/10">
@@ -929,6 +936,46 @@ const acceptInvite = (memberId) => {
         )}
       </div>
       {/* Modals */}
+      {pendingJoinRequest && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-black rounded-xl p-6 w-full max-w-sm shadow-lg text-center">
+            <p className="text-gray-200 text-lg font-semibold mb-4">
+              {pendingJoinRequest.name} wants to join the circle.
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => {
+                  acceptInvite(pendingJoinRequest.id);
+                  setPendingJoinRequest(null);
+                }}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded hover:-translate-y-1 transition-all duration-300"
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => {
+                  const updatedCircle = {
+                    ...selectedCircle,
+                    members: selectedCircle.members.filter(m => m.id !== pendingJoinRequest.id),
+                  };
+
+                  const updatedCircles = circles.map(circle =>
+                    circle.id === selectedCircle.id ? updatedCircle : circle
+                  );
+
+                  setSelectedCircle(updatedCircle);
+                  setCircles(updatedCircles);
+                  setPendingJoinRequest(null);
+                }}
+                className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded hover:-translate-y-1 transition-all duration-300"
+              >
+                Cancel
+              </button>
+
+            </div>
+          </div>
+        </div>
+      )}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 w-full max-w-md">
@@ -957,7 +1004,7 @@ const acceptInvite = (memberId) => {
           </div>
         </div>
       )}
-      
+
       {showAddItemModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 w-full max-w-md">

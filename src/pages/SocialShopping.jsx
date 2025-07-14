@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Users, Plus, ShoppingCart, MessageCircle, ThumbsUp, ThumbsDown, Crown, Eye, UserCheck, Zap, X, Trash2, Activity } from 'lucide-react';
 import data from "../assets/data.json";
+import { Link } from 'react-router-dom';
 
 export default function SocialShopping() {
   const [activeTab, setActiveTab] = useState('circles');
@@ -17,7 +18,7 @@ export default function SocialShopping() {
   const [selectedSub, setSelectedSub] = useState('');
   const [selectedProductIndex, setSelectedProductIndex] = useState('');
   const [pendingJoinRequest, setPendingJoinRequest] = useState(null);
-
+  const [newCircleBudget, setNewCircleBudget] = useState('');
 
   // Mock data for demo
   const [circles, setCircles] = useState([
@@ -267,9 +268,9 @@ export default function SocialShopping() {
       "Great choice!",
       "Do we really need this?",
       "This brand is good quality",
-      "Maybe get organic version?",
+      "Maybe get other?",
       "I can get this cheaper elsewhere",
-      "Perfect for the recipe",
+      "Perfect for your needs",
       "Too expensive IMO",
       "Good deal!",
       "Let's get 2 instead",
@@ -335,7 +336,7 @@ export default function SocialShopping() {
   };
 
   const createCircle = () => {
-    if (newCircleName.trim()) {
+    if (newCircleName.trim() && newCircleBudget.trim()) {
       const newCircle = {
         id: Date.now(),
         name: newCircleName,
@@ -350,21 +351,23 @@ export default function SocialShopping() {
             status: "joined"
           }
         ],
-        budget: 400,
+        budget: parseFloat(newCircleBudget),
         spent: 0,
         created: "Just now",
         lastActivity: "Just now"
       };
 
       setCircles([...circles, newCircle]);
-      setSelectedCircle(newCircle);     // set active
-      setSharedCart([]);                // EMPTY cart for new circle
-      setActivityFeed([]);              // optional: reset feed
-      setRealtimeUpdates([]);           // optional: reset updates
+      setSelectedCircle(newCircle);
+      setSharedCart([]);
+      setActivityFeed([]);
+      setRealtimeUpdates([]);
       setNewCircleName('');
+      setNewCircleBudget('');
       setShowCreateModal(false);
     }
   };
+
 
 
   const addItem = () => {
@@ -737,6 +740,18 @@ export default function SocialShopping() {
                         </div>
                       </div>
                     </div>
+
+                    <div className="flex justify-center items-center text-sm mt-4">
+                      <Link
+                        to="/checkout"
+                        state={{ selectedCircle, sharedCart }}
+                        className="bg-emerald-500 text-white p-2 rounded-lg hover:scale-105 transition-transform"
+                      >
+                        Checkout
+                      </Link>
+
+                    </div>
+
                   </div>
 
                   {/* Members */}
@@ -979,7 +994,8 @@ export default function SocialShopping() {
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-white mb-4"> Create New Circle</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">Create New Circle</h3>
+
             <input
               type="text"
               placeholder="Circle Name"
@@ -987,6 +1003,15 @@ export default function SocialShopping() {
               onChange={(e) => setNewCircleName(e.target.value)}
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-4"
             />
+
+            <input
+              type="number"
+              placeholder="Budget (e.g. 500)"
+              value={newCircleBudget}
+              onChange={(e) => setNewCircleBudget(e.target.value)}
+              className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-4"
+            />
+
             <div className="flex justify-end space-x-4">
               <button
                 onClick={() => setShowCreateModal(false)}
@@ -1004,6 +1029,7 @@ export default function SocialShopping() {
           </div>
         </div>
       )}
+
 
       {showAddItemModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">

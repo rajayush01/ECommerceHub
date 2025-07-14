@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import { Circle } from "lucide-react";
 import SocialShopping from "./pages/SocialShopping";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/circle" element={<Circle />} />
           <Route path="/social-shopping" element={<SocialShopping />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </div>
       <Footer />

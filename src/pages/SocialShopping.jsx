@@ -803,7 +803,7 @@ export default function SocialShopping() {
                       <div className="flex space-x-2">
                         <input
                           type="email"
-                          placeholder="Enter email to invite"
+                          placeholder="Enter username/email to invite"
                           value={inviteEmail}
                           onChange={(e) => setInviteEmail(e.target.value)}
                           className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"

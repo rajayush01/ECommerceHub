@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../contexts/CartContext.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useState } from "react";
@@ -7,8 +7,11 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const { state } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const count = state.items.reduce((s,i)=>s+i.qty, 0);
-  
+  const location = useLocation();
+  const count = state.items.reduce((s, i) => s + i.qty, 0);
+  const isRestrictedPage =
+    location.pathname === "/social-shopping" || location.pathname === "/checkout";
+
   return (
     <>
       <header className="bg-black/95 backdrop-blur-xl shadow-2xl sticky top-0 z-50 border-b border-white/10 relative overflow-hidden">
@@ -17,10 +20,10 @@ export default function Navbar() {
           <div className="absolute top-0 left-0 w-16 sm:w-32 h-16 sm:h-32 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-indigo-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
-        
+
         <div className="relative z-10 container mx-auto flex items-center justify-between py-2 sm:py-3 md:py-4 px-3 sm:px-4 md:px-6">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="group flex items-center space-x-1 sm:space-x-2 text-lg sm:text-2xl lg:text-3xl font-black text-white hover:text-purple-300 transition-all duration-300 tracking-tight"
           >
             <div className="relative">
@@ -30,7 +33,7 @@ export default function Navbar() {
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl sm:rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
             </div>
             <span className="bg-gradient-to-r text-sm sm:text-lg md:text-2xl from-white to-purple-200 bg-clip-text text-transparent hidden xs:block">
-              CommerceHub 
+              CommerceHub
             </span>
             <span className="bg-gradient-to-r text-sm md:text-2xl from-white to-purple-200 bg-clip-text text-transparent block xs:hidden">
               CommerceHub
@@ -38,7 +41,6 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-2 lg:space-x-3">
-            {/* Social Shopping Circles Button */}
             <Link
               to="/social-shopping"
               className="relative group bg-gradient-to-r from-emerald-500/20 to-teal-500/20 backdrop-blur-sm hover:from-emerald-500/30 hover:to-teal-500/30 px-3 lg:px-4 py-3 rounded-2xl transition-all duration-300 hover:scale-110 border border-emerald-300/20 hover:border-emerald-300/40"
@@ -65,16 +67,14 @@ export default function Navbar() {
                 <span className="text-white font-semibold text-sm lg:text-base hidden lg:block">View Cart</span>
                 <span className="text-white font-semibold text-sm block lg:hidden">Cart</span>
               </div>
-              
               {count > 0 && (
                 <div className="absolute -top-2 -right-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full text-xs px-2 py-1 font-bold shadow-lg min-w-[20px] h-5 flex items-center justify-center">
                   {count}
                 </div>
               )}
-              
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/50 to-purple-500/50 rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
             </Link>
-            
+
             {user ? (
               <div className="flex items-center space-x-3">
                 <div className="bg-white/10 backdrop-blur-sm px-3 lg:px-4 py-3 rounded-2xl border border-white/20 transform hover:scale-105 transition-all duration-300">
@@ -85,18 +85,17 @@ export default function Navbar() {
                     </span>
                   </div>
                 </div>
-                
-                <button 
-                  onClick={logout} 
+                <button
+                  onClick={logout}
                   className="group relative bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 lg:px-5 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/50 overflow-hidden text-sm lg:text-base"
                 >
                   <span className="relative z-10">Logout</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                 </button>
               </div>
-            ) : (
-              <Link 
-                to="/login" 
+            ) : !isRestrictedPage && (
+              <Link
+                to="/login"
                 className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 lg:px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/50 overflow-hidden text-sm lg:text-base"
               >
                 <span className="relative z-10 flex items-center space-x-2">
@@ -129,13 +128,11 @@ export default function Navbar() {
               title="Go to Cart Page"
             >
               <span className="text-lg transform group-hover:scale-110 transition-transform duration-300">🛍️</span>
-              
               {count > 0 && (
                 <div className="absolute -top-1 -right-1 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full text-xs px-1.5 py-0.5 font-bold shadow-lg min-w-[18px] h-4 flex items-center justify-center">
                   {count}
                 </div>
               )}
-              
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/50 to-purple-500/50 rounded-xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
             </Link>
 
@@ -153,10 +150,10 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Mobile menu dropdown */}
         <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="relative z-10 px-3 sm:px-4 pb-4 space-y-3">
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            
             {user ? (
               <div className="space-y-3">
                 <div className="bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20">
@@ -167,21 +164,20 @@ export default function Navbar() {
                     </span>
                   </div>
                 </div>
-                
-                <button 
+                <button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
-                  }} 
+                  }}
                   className="w-full group relative bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-4 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/50 overflow-hidden"
                 >
                   <span className="relative z-10">Logout</span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                 </button>
               </div>
-            ) : (
-              <Link 
-                to="/login" 
+            ) : !isRestrictedPage && (
+              <Link
+                to="/login"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block w-full group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/50 overflow-hidden"
               >
@@ -196,7 +192,7 @@ export default function Navbar() {
             )}
           </div>
         </div>
-        
+
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
       </header>
     </>
